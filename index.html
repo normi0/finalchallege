@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genshin Impact Mad Libs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-image: url(image/1243053.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        h1 {
+            color: #6a5acd;
+        }
+        .madlibs-container {
+            margin-top: 20px;
+        }
+        input {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+            font-size: 16px;
+            max-width: 60px;
+            border-color: #6a5acd;
+            font-size: 12px;
+            margin: 5px 0;
+            transition: width 0.2s ease-in-out; /* Set minimum width */
+        }
+        .story {
+            margin-top: 20px;
+            border: 2px solid #6a5acd;
+            padding: 15px;
+            background-color: rgba(230, 230, 250, 0.8); /* Transparent background */
+            font-style: italic;
+            border-radius: 15px;
+            color: black;
+        }
+        div {
+            border-radius: 15px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Genshin Impact Mad Libs</h1>
+    <p style="color: white;">Fill in the blanks directly inside the first story, and see the second one update automatically in real-time!</p>
+
+    <div class="madlibs-container">
+        <!-- First Story with Inputs -->
+        <div class="story">
+            One 
+            <input type="text" id="adjective1" placeholder="adjective" oninput="updateStory();" /> day, 
+            <input type="text" id="characterName" placeholder="character's name" oninput="updateStory();" /> 
+            decided to 
+            <input type="text" id="verb" placeholder="verb" oninput="updateStory();" /> in the beautiful land of 
+            <input type="text" id="location" placeholder="location" oninput="updateStory();" />.  
+            Everything seemed peaceful until a wild 
+            <input type="text" id="enemyName" placeholder="enemy's name" oninput="updateStory();" /> appeared, blocking their path!  
+
+            With their trusty 
+            <input type="text" id="weapon" placeholder="weapon" oninput="updateStory();" /> in hand, 
+            <input type="text" id="characterNameAgain" placeholder="character's name" oninput="updateStory();" /> 
+            faced the 
+            <input type="text" id="enemyNameAgain" placeholder="enemy's name" oninput="updateStory();" /> head-on.  
+            After a fierce battle, 
+            <input type="text" id="characterNameFinal" placeholder="character's name" oninput="updateStory();" /> 
+            defeated the 
+            <input type="text" id="enemyNameFinal" placeholder="enemy's name" oninput="updateStory();" /> and continued their journey, 
+            proving once again that they are a true hero of 
+            <input type="text" id="locationFinal" placeholder="location" oninput="updateStory();" />.
+        </div>
+
+        <!-- Second Story (This is the duplicate story that will update automatically) -->
+        <div class="story" id="storyOutput"></div>
+    </div>
+
+    <script>
+        // Function to update the second story with real-time input values
+        function updateStory() {
+            // Get values from the input fields
+            const adjective1 = document.getElementById("adjective1").value || "adjective";
+            const characterName = document.getElementById("characterName").value || "character's name";
+            const verb = document.getElementById("verb").value || "verb";
+            const location = document.getElementById("location").value || "location";
+            const enemyName = document.getElementById("enemyName").value || "enemy's name";
+            const weapon = document.getElementById("weapon").value || "weapon";
+            const characterNameAgain = document.getElementById("characterNameAgain").value || "character's name";
+            const enemyNameAgain = document.getElementById("enemyNameAgain").value || "enemy's name";
+            const characterNameFinal = document.getElementById("characterNameFinal").value || "character's name";
+            const enemyNameFinal = document.getElementById("enemyNameFinal").value || "enemy's name";
+            const locationFinal = document.getElementById("locationFinal").value || "location";
+
+            // Create the second story using the current input values
+            const story = `
+                One ${adjective1} day, ${characterName} decided to ${verb} in the beautiful land of 
+                ${location}. Everything seemed peaceful until a wild ${enemyName} appeared, blocking their path!  
+
+                With their trusty ${weapon} in hand, ${characterNameAgain} faced the ${enemyNameAgain} head-on. 
+                After a fierce battle, ${characterNameFinal} defeated the ${enemyNameFinal} and continued their journey, 
+                proving once again that they are a true hero of ${locationFinal}.
+            `;
+
+            // Update the second story with the new filled content
+            document.getElementById("storyOutput").innerText = story;
+        }
+
+        // Call the function once to fill the second story with default values when the page loads
+        window.onload = updateStory();
+        
+    </script>
+</body>
+</html>
