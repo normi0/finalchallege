@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genshin Impact Mad Libs</title>
+    <title>Xiao's Mad Libs Adventure</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-image: url(image/1243053.jpg);
+            background-image: url('image/1243053.jpg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -16,101 +16,172 @@
         h1 {
             color: #6a5acd;
         }
-        .madlibs-container {
-            margin-top: 20px;
-        }
-        input {
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 5px;
-            font-size: 16px;
-            max-width: 60px;
-            border-color: #6a5acd;
-            font-size: 12px;
-            margin: 5px 0;
-            transition: width 0.2s ease-in-out; /* Set minimum width */
-        }
-        .story {
+        .story-space {
             margin-top: 20px;
             border: 2px solid #6a5acd;
             padding: 15px;
-            background-color: rgba(230, 230, 250, 0.8); /* Transparent background */
+            background-color: rgba(230, 230, 250, 0.8);
             font-style: italic;
             border-radius: 15px;
             color: black;
+            line-height: 1.8;
         }
-        div {
+        .story-preview {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(230, 230, 250, 0.6);
             border-radius: 15px;
+            border: 2px solid #6a5acd;
             color: black;
+            line-height: 1.8;
+            font-style: italic;
+        }
+        input, .editable-p {
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 10px;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .editable-p {
+            border: 1px dashed #6a5acd;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .controls input {
+            flex: 1;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #6a5acd;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4b3b8d;
+        }
+        .story-preview span {
+            display: inline-block;
+            min-width: 50px;
+            border-bottom: 1px dashed #ccc;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>Genshin Impact Mad Libs</h1>
-    <p style="color: white;">Fill in the blanks directly inside the first story, and see the second one update automatically in real-time!</p>
+    <h1>Xiao's Mad Libs Adventure</h1>
 
-    <div class="madlibs-container">
-        <!-- First Story with Inputs -->
-        <div class="story">
-            One 
-            <input type="text" id="adjective1" placeholder="adjective" oninput="updateStory();" /> day, 
-            <input type="text" id="characterName" placeholder="character's name" oninput="updateStory();" /> 
-            decided to 
-            <input type="text" id="verb" placeholder="verb" oninput="updateStory();" /> in the beautiful land of 
-            <input type="text" id="location" placeholder="location" oninput="updateStory();" />.  
-            Everything seemed peaceful until a wild 
-            <input type="text" id="enemyName" placeholder="enemy's name" oninput="updateStory();" /> appeared, blocking their path!  
+    <!-- First Story Section -->
+    <div class="story-space" id="content">
+        One <input type="text" placeholder="peaceful" /> day, Xiao decided to 
+        <input type="text" placeholder="explore" /> in the beautiful land of 
+        <input type="text" placeholder="Mondstadt" />. Everything seemed peaceful until a wild 
+        <input type="text" placeholder="hilichurl" /> appeared, blocking his path!
 
-            With their trusty 
-            <input type="text" id="weapon" placeholder="weapon" oninput="updateStory();" /> in hand, 
-            <input type="text" id="characterNameAgain" placeholder="character's name" oninput="updateStory();" /> 
-            faced the 
-            <input type="text" id="enemyNameAgain" placeholder="enemy's name" oninput="updateStory();" /> head-on.  
-            After a fierce battle, 
-            <input type="text" id="characterNameFinal" placeholder="character's name" oninput="updateStory();" /> 
-            defeated the 
-            <input type="text" id="enemyNameFinal" placeholder="enemy's name" oninput="updateStory();" /> and continued their journey, 
-            proving once again that they are a true hero of 
-            <input type="text" id="locationFinal" placeholder="location" oninput="updateStory();" />.
-        </div>
+        With his trusty <input type="text" placeholder="polearm" /> in hand, Xiao faced the 
+        <input type="text" placeholder="fatui" /> head-on. After a fierce battle, Xiao defeated the 
+        <input type="text" placeholder="geo slimes" /> and continued his journey, proving once again that he is a true hero of 
+        <input type="text" placeholder="Liyue" />.
+    </div>
 
-        <!-- Second Story (This is the duplicate story that will update automatically) -->
-        <div class="story" id="storyOutput"></div>
+    <!-- Editable Section -->
+    <div id="editSection" class="controls" style="display: none;">
+        <input type="text" id="editField" placeholder="Edit content here" />
+        <button id="applyButton">Apply</button>
+        <button id="deleteButton">Delete</button>
+    </div>
+
+    <!-- Second Story Section -->
+    <div class="story-preview" id="preview">
+        One <span></span> day, Xiao decided to <span></span> in the beautiful land of <span></span>. Everything seemed peaceful until a wild <span></span> appeared, blocking his path!
+
+        With his trusty <span></span> in hand, Xiao faced the <span></span> head-on. After a fierce battle, Xiao defeated the <span></span> and continued his journey, proving once again that he is a true hero of <span></span>.
     </div>
 
     <script>
-        // Function to update the second story with real-time input values
-        function updateStory() {
-            // Get values from the input fields
-            const adjective1 = document.getElementById("adjective1").value || "adjective";
-            const characterName = document.getElementById("characterName").value || "character's name";
-            const verb = document.getElementById("verb").value || "verb";
-            const location = document.getElementById("location").value || "location";
-            const enemyName = document.getElementById("enemyName").value || "enemy's name";
-            const weapon = document.getElementById("weapon").value || "weapon";
-            const characterNameAgain = document.getElementById("characterNameAgain").value || "character's name";
-            const enemyNameAgain = document.getElementById("enemyNameAgain").value || "enemy's name";
-            const characterNameFinal = document.getElementById("characterNameFinal").value || "character's name";
-            const enemyNameFinal = document.getElementById("enemyNameFinal").value || "enemy's name";
-            const locationFinal = document.getElementById("locationFinal").value || "location";
+        const contentDiv = document.getElementById('content');
+        const editSection = document.getElementById('editSection');
+        const editField = document.getElementById('editField');
+        const preview = document.getElementById('preview');
+        let activeP = null;
 
-            // Create the second story using the current input values
-            const story = `
-                One ${adjective1} day, ${characterName} decided to ${verb} in the beautiful land of 
-                ${location}. Everything seemed peaceful until a wild ${enemyName} appeared, blocking their path!  
+        // Event listener for input fields to update the preview in real-time
+        contentDiv.addEventListener('input', (event) => {
+            if (event.target.tagName === 'INPUT') {
+                updatePreview();
+            }
+        });
 
-                With their trusty ${weapon} in hand, ${characterNameAgain} faced the ${enemyNameAgain} head-on. 
-                After a fierce battle, ${characterNameFinal} defeated the ${enemyNameFinal} and continued their journey, 
-                proving once again that they are a true hero of ${locationFinal}.
-            `;
+        // Event listener for input fields to convert to <p>
+        contentDiv.addEventListener('focusout', (event) => {
+            if (event.target.tagName === 'INPUT') {
+                const input = event.target;
+                if (input.value.trim() !== '') {
+                    const p = document.createElement('p');
+                    p.textContent = input.value;
+                    p.className = 'editable-p';
+                    contentDiv.replaceChild(p, input);
+                    updatePreview();
+                }
+            }
+        });
 
-            // Update the second story with the new filled content
-            document.getElementById("storyOutput").innerText = story;
+        // Event listener for <p> tags to enable editing
+        contentDiv.addEventListener('click', (event) => {
+            if (event.target.tagName === 'P') {
+                activeP = event.target;
+                editField.value = activeP.textContent;
+                editSection.style.display = 'flex';
+            }
+        });
+
+        // Apply button functionality
+        document.getElementById('applyButton').addEventListener('click', () => {
+            if (activeP) {
+                const newValue = editField.value.trim();
+                if (newValue === '') {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.placeholder = 'Enter text here';
+                    contentDiv.replaceChild(input, activeP);
+                } else {
+                    activeP.textContent = newValue;
+                }
+                updatePreview();
+                closeEditSection();
+            }
+        });
+
+        // Delete button functionality
+        document.getElementById('deleteButton').addEventListener('click', () => {
+            if (activeP) {
+                activeP.textContent = '____';
+                updatePreview();
+                closeEditSection();
+            }
+        });
+
+        function closeEditSection() {
+            editSection.style.display = 'none';
+            editField.value = '';
+            activeP = null;
         }
 
-        // Call the function once to fill the second story with default values when the page loads
-        window.onload = updateStory();
-        
+        function updatePreview() {
+            const spans = preview.querySelectorAll('span');
+            const ps = contentDiv.querySelectorAll('.editable-p, input');
+            spans.forEach((span, index) => {
+                const value = ps[index]?.tagName === 'P' ? ps[index].textContent : ps[index]?.value || '____';
+                span.textContent = value;
+            });
+        }
     </script>
 </body>
 </html>
